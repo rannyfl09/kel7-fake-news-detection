@@ -22,7 +22,9 @@ from sklearn.metrics import (accuracy_score, precision_score, recall_score,
 
 st.set_page_config(page_title="Deteksi Berita Palsu", page_icon="📰", layout="wide")
 
-DATA_PATH = Path(__file__).parent / "news.csv"
+# Mendukung news.csv biasa atau versi terkompresi news.csv.gz (pandas membaca .gz otomatis)
+_dir = Path(__file__).parent
+DATA_PATH = _dir / "news.csv" if (_dir / "news.csv").exists() else _dir / "news.csv.gz"
 RANDOM_STATE = 42
 
 
@@ -115,7 +117,7 @@ st.title("📰 Deteksi Berita Palsu")
 st.caption("Proyek UAS Big Data & Machine Learning · Klasifikasi teks dengan TF-IDF")
 
 if not DATA_PATH.exists():
-    st.error("File **news.csv** tidak ditemukan. Letakkan news.csv di folder yang sama dengan app.py.")
+    st.error("File **news.csv** (atau **news.csv.gz**) tidak ditemukan. Letakkan di folder yang sama dengan app.py.")
     st.stop()
 
 art = train_all()
